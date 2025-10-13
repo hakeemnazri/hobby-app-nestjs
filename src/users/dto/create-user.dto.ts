@@ -4,13 +4,15 @@ import {
   IsOptional,
   IsString,
   Matches,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @MinLength(96)
+  @MinLength(3)
+  @MaxLength(96)
   firstName: string;
 
   @IsString()
