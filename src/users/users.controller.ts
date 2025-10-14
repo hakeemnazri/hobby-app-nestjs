@@ -25,14 +25,11 @@ export class UsersController {
 
   @Get('/:id')
   getUsers(
-    @Param() id: GetUsersParamDto,
+    @Param() getUsersParamDto: GetUsersParamDto,
     @Query('page', new DefaultValuePipe(10), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
   ) {
-    console.log(id);
-    console.log(page);
-    console.log(limit);
-    return this.usersService.getUsers();
+    return this.usersService.findAll(getUsersParamDto, limit, page);
   }
 
   @Patch()
