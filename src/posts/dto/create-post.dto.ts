@@ -14,17 +14,30 @@ import { postType } from '../enums/postType.enum';
 import { postStatus } from '../enums/status.enum';
 import { CreatePostMetaOptionsDto } from './create-options-meta-dto.dto';
 import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
+  @ApiProperty({
+    example: 'This is a title',
+    description: 'Post title',
+  })
   @IsString()
   @MinLength(4)
   @IsNotEmpty()
   title: string;
 
+  @ApiProperty({
+    enum: postType,
+    description: "Possible values, 'post', 'page', 'story', 'series'",
+  })
   @IsEnum(postType)
   @IsNotEmpty()
   postType: postType;
 
+  @ApiProperty({
+    description: 'For example- my-url',
+    example: 'my-post-schema',
+  })
   @IsString()
   @IsNotEmpty()
   @Matches(/[a-z0-9]+/g, {
@@ -32,31 +45,76 @@ export class CreatePostDto {
   })
   slug: string;
 
+  @ApiProperty({
+    enum: postStatus,
+    description: "Possible values, 'draft', 'published', 'review', 'scheduled'",
+    example: 'published',
+  })
   @IsEnum(postStatus)
   @IsNotEmpty()
   status: postStatus;
 
+  @ApiPropertyOptional({
+    description: 'Post content',
+    example: 'Post content',
+  })
   @IsString()
   @IsOptional()
   content?: string;
 
+  @ApiPropertyOptional({
+    description: "Post's schema",
+    example: '{"type": "object"}',
+  })
   @IsString()
   @IsJSON()
   schema?: string;
 
+  @ApiPropertyOptional({
+    description: 'Featured image url',
+    example: 'https://example.com/image.jpg',
+  })
   @IsString()
   @IsOptional()
   featuredImageUrl?: string;
 
+  @ApiPropertyOptional({
+    description: "Post's publish date",
+    example: '2022-01-01T00:00:00.000Z',
+  })
   @IsISO8601()
-  publishOn: Date;
+  @IsOptional()
+  publishOn?: Date;
 
+  @ApiPropertyOptional({
+    description: 'Post tags',
+    example: ['tag1', 'tag2'],
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   @MinLength(3, { each: true })
   tags: string[];
 
+  @ApiPropertyOptional({
+    type: 'array',
+    required: false,
+    items: {
+      type: 'object',
+      properties: {
+        key: {
+          type: 'string',
+          description: 'Meta key',
+          example: 'author',
+        },
+        value: {
+          type: 'any',
+          description: 'Any value you want to store',
+          example: true,
+        },
+      },
+    },
+  })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
