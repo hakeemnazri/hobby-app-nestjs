@@ -28,4 +28,12 @@ export class UsersService {
       },
     ];
   }
+
+  findById(id: number) {
+    return {
+      id: id,
+      name: 'John Doe',
+      email: 'johnDoe@example.com',
+    };
+  }
 }
