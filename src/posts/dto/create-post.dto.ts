@@ -8,9 +8,13 @@ import {
   IsString,
   Matches,
   MinLength,
+  Validate,
+  ValidateNested,
 } from 'class-validator';
 import { postType } from '../enums/postType.enum';
 import { postStatus } from '../enums/status.enum';
+import { CreatePostMetaOptionsDto } from './create-options-meta-dto.dto';
+import { Type } from 'class-transformer';
 
 export class CreatePostDto {
   @IsString()
@@ -54,5 +58,9 @@ export class CreatePostDto {
   @MinLength(3, { each: true })
   tags: string[];
 
-  metaOptions: [];
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePostMetaOptionsDto)
+  metaOptions: CreatePostMetaOptionsDto[];
 }
