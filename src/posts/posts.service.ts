@@ -4,7 +4,7 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class PostsService {
   createPost() {
-    throw new Error('Method not implemented.');
+    return 'This action adds a new post';
   }
   constructor(private readonly usersService: UsersService) {}
   findAll(userId: string) {

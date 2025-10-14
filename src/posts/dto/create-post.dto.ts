@@ -8,7 +8,6 @@ import {
   IsString,
   Matches,
   MinLength,
-  Validate,
   ValidateNested,
 } from 'class-validator';
 import { postType } from '../enums/postType.enum';
@@ -43,7 +42,7 @@ export class CreatePostDto {
 
   @IsString()
   @IsJSON()
-  scehma?: string;
+  schema?: string;
 
   @IsString()
   @IsOptional()
