@@ -11,6 +11,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersParamDto } from './dto/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'nestjs-prisma';
+import { UsersCreateManyUsersProvider } from './providers/users-create-many-users.provider';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,8 @@ export class UsersService {
     private readonly authService: AuthService,
 
     private readonly prisma: PrismaService,
+
+    private readonly usersCreateManyUsersProvider: UsersCreateManyUsersProvider,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
     try {
@@ -88,5 +91,11 @@ export class UsersService {
         description: 'Error connecting to the database',
       });
     }
+  }
+
+  async createManyUsers(createUsersDto: CreateUserDto[]) {
+    return await this.usersCreateManyUsersProvider.createManyUsers(
+      createUsersDto,
+    );
   }
 }

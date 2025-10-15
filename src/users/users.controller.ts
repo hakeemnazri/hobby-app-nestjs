@@ -25,6 +25,11 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
+  @Post('create-many')
+  createManyUsers(@Body() createUsersDto: CreateUserDto[]) {
+    return this.usersService.createManyUsers(createUsersDto);
+  }
+
   @Get('/:id')
   @ApiOperation({
     summary: 'Fetches a list of users on the application',
