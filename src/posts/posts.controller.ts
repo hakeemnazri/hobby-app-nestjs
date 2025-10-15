@@ -28,7 +28,7 @@ export class PostsController {
   @ApiResponse({
     status: 200,
     description:
-      'You get a 200 response when all records have been successfully retrieved.',
+      'You get a 200 response when all records have been successfully retrieved by id.',
   })
   @Get('/:userId')
   getPosts(@Param('userId') userId: number) {
@@ -58,7 +58,7 @@ export class PostsController {
       'You get a 200 response when The record has been successfully updated.',
   })
   @Patch()
-  updatePost(@Body() patchPostDto: PatchPostDto) {
-    console.log(patchPostDto);
+  async updatePost(@Body() patchPostDto: PatchPostDto) {
+    return await this.postsService.updatePost(patchPostDto);
   }
 }
