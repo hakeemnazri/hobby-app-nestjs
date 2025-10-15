@@ -1,5 +1,9 @@
 import { TagsService } from './../tags/tags.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { UsersService } from 'src/users/users.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -65,52 +69,64 @@ export class PostsService {
   }
 
   async updatePost(patchPostDto: PatchPostDto) {
-    const existingTags = await this.tagsService.findMultipleTags(
-      patchPostDto.tags ?? [],
-    );
-    console.log(existingTags);
+    try {
+      const existingTags = await this.tagsService.findMultipleTags(
+        patchPostDto.tags ?? [],
+      );
 
-    const existingPost = await this.prisma.post.findUnique({
-      where: {
-        id: patchPostDto.id,
-      },
-    });
-
-    if (!existingPost) {
-      throw new Error('Post does not exist');
-    }
-
-    const updatedPost = await this.prisma.post.update({
-      where: {
-        id: patchPostDto.id,
-      },
-      data: {
-        content: patchPostDto.content,
-        title: patchPostDto.title,
-        postType: patchPostDto.postType,
-        featuredImageUrl: patchPostDto.featuredImageUrl,
-        postStatus: patchPostDto.postStatus,
-        slug: patchPostDto.slug,
-        publishedOn: patchPostDto.publishedOn,
-        tags: {
-          connect: existingTags,
+      const existingPost = await this.prisma.post.findUnique({
+        where: {
+          id: patchPostDto.id,
         },
-      },
-      include: {
-        tags: true,
-      },
-    });
+      });
 
-    return updatedPost;
+      if (!existingPost) {
+        throw new BadRequestException('Post does not exist');
+      }
+      const updatedPost = await this.prisma.post.update({
+        where: {
+          id: patchPostDto.id,
+        },
+        data: {
+          content: patchPostDto.content,
+          title: patchPostDto.title,
+          postType: patchPostDto.postType,
+          featuredImageUrl: patchPostDto.featuredImageUrl,
+          postStatus: patchPostDto.postStatus,
+          slug: patchPostDto.slug,
+          publishedOn: patchPostDto.publishedOn,
+          tags: {
+            connect: existingTags,
+          },
+        },
+        include: {
+          tags: true,
+        },
+      });
+
+      return updatedPost;
+    } catch (error) {
+      console.error(error);
+      throw new RequestTimeoutException('Unable to process request', {
+        description: 'Error connecting to the database',
+      });
+    }
   }
 
   async deletePostById(id: number) {
-    await this.prisma.post.delete({
-      where: {
-        id,
-      },
-    });
+    try {
+      await this.prisma.post.delete({
+        where: {
+          id,
+        },
+      });
 
-    return { deleted: true, id };
+      return { deleted: true, id };
+    } catch (error) {
+      console.error(error);
+      throw new RequestTimeoutException('Unable to process request', {
+        description: 'Error connecting to the database',
+      });
+    }
   }
 }

@@ -1,4 +1,12 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersParamDto } from './dto/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
@@ -13,26 +21,33 @@ export class UsersService {
     private readonly prisma: PrismaService,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.prisma.user.findUnique({
-      where: {
-        email: createUserDto.email,
-      },
-    });
+    try {
+      const existingUser = await this.prisma.user.findUnique({
+        where: {
+          email: createUserDto.email,
+        },
+      });
 
-    if (existingUser) {
-      throw new Error('User already exists');
+      if (existingUser) {
+        throw new BadRequestException('User already exists');
+      }
+
+      const newUswer = await this.prisma.user.create({
+        data: {
+          firstName: createUserDto.firstName,
+          lastName: createUserDto.lastName,
+          email: createUserDto.email,
+          password: createUserDto.password,
+        },
+      });
+
+      return newUswer;
+    } catch (error) {
+      console.error(error);
+      throw new RequestTimeoutException('Unable to process request', {
+        description: 'Error connecting to the database',
+      });
     }
-
-    const newUswer = await this.prisma.user.create({
-      data: {
-        firstName: createUserDto.firstName,
-        lastName: createUserDto.lastName,
-        email: createUserDto.email,
-        password: createUserDto.password,
-      },
-    });
-
-    return newUswer;
   }
 
   getUsers() {
@@ -40,30 +55,38 @@ export class UsersService {
   }
 
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
-    console.log(getUsersParamDto);
-    console.log(limit);
-    console.log(page);
-    const isAuth = this.authService.isAuthenticated();
-    console.log(isAuth);
-    return [
+    throw new HttpException(
       {
-        name: 'John Doe',
-        email: 'johnDoe@example.com',
+        statusCode: HttpStatus.NOT_IMPLEMENTED,
+        error: 'Not implemented',
+        message: 'Not implemented',
       },
+      HttpStatus.NOT_IMPLEMENTED,
       {
-        name: 'Jane Doe',
-        email: 'janeDoe@example.com',
+        description: 'Occured because not implemented',
+        cause: new Error(),
       },
-    ];
+    );
   }
 
-  findOneById(id: number) {
-    const user = this.prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
+  async findOneById(id: number) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
 
-    return user;
+      if (!user) {
+        throw new BadRequestException('User does not exist');
+      }
+
+      return user;
+    } catch (error) {
+      console.error(error);
+      throw new RequestTimeoutException('Unable to process request', {
+        description: 'Error connecting to the database',
+      });
+    }
   }
 }
