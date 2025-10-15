@@ -12,6 +12,7 @@ import { GetUsersParamDto } from './dto/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'nestjs-prisma';
 import { UsersCreateManyUsersProvider } from './providers/users-create-many-users.provider';
+import { CreateManyUsersDto } from './dto/create-many-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -58,6 +59,7 @@ export class UsersService {
   }
 
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
+    console.log(getUsersParamDto, limit, page);
     throw new HttpException(
       {
         statusCode: HttpStatus.NOT_IMPLEMENTED,
@@ -93,9 +95,9 @@ export class UsersService {
     }
   }
 
-  async createManyUsers(createUsersDto: CreateUserDto[]) {
+  async createManyUsers(createManyUsersDto: CreateManyUsersDto) {
     return await this.usersCreateManyUsersProvider.createManyUsers(
-      createUsersDto,
+      createManyUsersDto,
     );
   }
 }

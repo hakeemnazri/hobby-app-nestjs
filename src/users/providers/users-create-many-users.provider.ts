@@ -1,15 +1,15 @@
 import { Injectable, RequestTimeoutException } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { PrismaService } from 'nestjs-prisma';
+import { CreateManyUsersDto } from '../dto/create-many-users.dto';
 
 @Injectable()
 export class UsersCreateManyUsersProvider {
   constructor(private readonly prisma: PrismaService) {}
-  async createManyUsers(createUsersDto: CreateUserDto[]) {
+  async createManyUsers(createManyUsersDto: CreateManyUsersDto) {
     try {
       const users = await this.prisma.$transaction(async (tx) => {
         const createdUsers = await tx.user.createMany({
-          data: createUsersDto,
+          data: createManyUsersDto.users,
         });
 
         return createdUsers;
