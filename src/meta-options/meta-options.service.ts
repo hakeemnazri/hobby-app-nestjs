@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMetaOptionDto } from './dto/create-meta-option.dto';
-import { UpdateMetaOptionDto } from './dto/update-meta-option.dto';
+import { CreatePostMetaOptionsDto } from './dto/create-meta-options-dto.dto';
 
 @Injectable()
 export class MetaOptionsService {
-  create(createMetaOptionDto: CreateMetaOptionDto) {
+  create(createMetaOptionDto: CreatePostMetaOptionsDto) {
+    console.log(createMetaOptionDto);
     return 'This action adds a new metaOption';
   }
 
@@ -14,13 +14,5 @@ export class MetaOptionsService {
 
   findOne(id: number) {
     return `This action returns a #${id} metaOption`;
-  }
-
-  update(id: number, updateMetaOptionDto: UpdateMetaOptionDto) {
-    return `This action updates a #${id} metaOption`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} metaOption`;
   }
 }

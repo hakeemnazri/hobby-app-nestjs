@@ -58,10 +58,3 @@ export class CreateTagDto {
   @MaxLength(1024)
   featuredImageUrl?: string;
 }
-
-// id               Int     @id @default(autoincrement())
-// name             String
-// slug             String  @unique
-// description      String?
-// schema           String?
-// featuredImageUrl String?
