@@ -8,6 +8,9 @@ import { DatabaseModule } from './database/database.module';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule } from '@nestjs/config';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
+import environmentValidation from './config/environment.validation';
 
 const ENV = process.env.NODE_ENV;
 
@@ -22,6 +25,8 @@ const ENV = process.env.NODE_ENV;
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env.${ENV}`, '.env'],
+      load: [appConfig, databaseConfig],
+      validationSchema: environmentValidation,
     }),
   ],
   controllers: [AppController],
