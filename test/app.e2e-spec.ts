@@ -17,7 +17,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    console.log(process.env.NODE_ENV);
+    console.log(process.env.TRY_ME);
     return request(app.getHttpServer()).get('/').expect(404);
   });
 });
