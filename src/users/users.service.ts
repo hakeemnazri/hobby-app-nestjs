@@ -2,16 +2,38 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersParamDto } from './dto/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
+
+    private readonly prisma: PrismaService,
   ) {}
-  create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     console.log(createUserDto);
-    return 'This action adds a new user';
+    const existingUser = await this.prisma.user.findUnique({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
+
+    const newUswer = await this.prisma.user.create({
+      data: {
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
+        email: createUserDto.email,
+        password: createUserDto.password,
+      },
+    });
+
+    return newUswer;
   }
 
   getUsers() {
