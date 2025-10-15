@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -24,5 +24,18 @@ export class TagsController {
   @Get()
   findAll() {
     return this.tagsService.findAll();
+  }
+
+  @ApiOperation({
+    summary: 'Delete a tag',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'You get a 200 response when The record has been successfully deleted.',
+  })
+  @Delete(':tagId')
+  async deleteTagById(@Param('tagId') id: number) {
+    return await this.tagsService.deleteTagById(id);
   }
 }

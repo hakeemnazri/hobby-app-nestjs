@@ -31,7 +31,13 @@ export class TagsService {
     return `This action returns all tags`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async deleteTagById(id: number) {
+    await this.prisma.tag.delete({
+      where: {
+        id,
+      },
+    });
+
+    return { deleted: true, id };
   }
 }
