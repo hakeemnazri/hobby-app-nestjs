@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PatchPostDto } from './dto/patch-post.dto';
+import { GetPostsDto } from './dto/get-posts.dto';
 
 @Controller('posts')
 @ApiTags('posts')
@@ -39,7 +41,8 @@ export class PostsController {
       'You get a 200 response when all records have been successfully retrieved by id.',
   })
   @Get('/:userId')
-  getPosts(@Param('userId') userId: number) {
+  getPosts(@Param('userId') userId: number, @Query() postQuery: GetPostsDto) {
+    console.log(postQuery);
     return this.postsService.findPostsById(userId);
   }
 

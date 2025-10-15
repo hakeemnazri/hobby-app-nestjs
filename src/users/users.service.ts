@@ -1,8 +1,6 @@
 import {
   BadRequestException,
   forwardRef,
-  HttpException,
-  HttpStatus,
   Inject,
   Injectable,
   RequestTimeoutException,
@@ -60,18 +58,7 @@ export class UsersService {
 
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
     console.log(getUsersParamDto, limit, page);
-    throw new HttpException(
-      {
-        statusCode: HttpStatus.NOT_IMPLEMENTED,
-        error: 'Not implemented',
-        message: 'Not implemented',
-      },
-      HttpStatus.NOT_IMPLEMENTED,
-      {
-        description: 'Occured because not implemented',
-        cause: new Error(),
-      },
-    );
+    return limit;
   }
 
   async findOneById(id: number) {
