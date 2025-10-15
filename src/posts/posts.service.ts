@@ -21,14 +21,7 @@ export class PostsService {
     const newPost = await this.prisma.post.create({
       data: {
         ...createPostDto,
-        metaOption: createPostDto.metaOptions
-          ? {
-              create: createPostDto.metaOptions?.map((option) => ({
-                key: option.key,
-                value: !option.value,
-              })),
-            }
-          : undefined,
+        metaOption: undefined,
       },
     });
 

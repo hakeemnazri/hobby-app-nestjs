@@ -56,16 +56,17 @@ model Tag {
 }
 
 model Meta_Option {
-  id     Int    @id @default(autoincrement())
-  postId Int
-  key    String
-  value  Json
+  id        Int  @id @default(autoincrement())
+  postId    Int
+  metaValue Json
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@map("meta_option")
 }
 
 enum PostType {
