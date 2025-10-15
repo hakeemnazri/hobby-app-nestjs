@@ -61,7 +61,7 @@ export class CreatePostDto {
   })
   @IsEnum(postStatus)
   @IsNotEmpty()
-  status: postStatus;
+  postStatus: postStatus;
 
   @ApiPropertyOptional({
     description: 'Post content',

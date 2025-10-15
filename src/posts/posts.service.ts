@@ -20,16 +20,7 @@ export class PostsService {
 
     const newPost = await this.prisma.post.create({
       data: {
-        userId: createPostDto.userId,
-        title: createPostDto.title,
-        content: createPostDto.content,
-        postType: createPostDto.postType,
-        slug: createPostDto.slug,
-        postStatus: createPostDto.status,
-        featuredImageUrl: createPostDto.featuredImageUrl,
-        publishedOn: createPostDto.publishOn,
-        schema: createPostDto.schema,
-        tags: createPostDto.tags,
+        ...createPostDto,
         metaOption: createPostDto.metaOptions
           ? {
               create: createPostDto.metaOptions?.map((option) => ({
@@ -43,14 +34,17 @@ export class PostsService {
 
     return newPost;
   }
-  findAll(userId: number) {
-    const user = this.usersService.findOneById(userId);
-    return [
-      {
-        user: user,
-        title: 'Post 1',
-        content: 'Post 1 content',
+
+  async findAll(userId: number) {
+    const user = await this.prisma.post.findUnique({
+      where: {
+        id: userId,
       },
-    ];
+      include: {
+        metaOption: true,
+        user: true,
+      },
+    });
+    return user;
   }
 }
