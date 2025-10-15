@@ -42,6 +42,19 @@ model Post {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Tag {
+  id               Int     @id @default(autoincrement())
+  name             String
+  slug             String  @unique
+  description      String?
+  schema           String?
+  featuredImageUrl String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
 model Meta_Option {
   id     Int    @id @default(autoincrement())
   postId Int
