@@ -13,7 +13,6 @@ export class UsersService {
     private readonly prisma: PrismaService,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email: createUserDto.email,
@@ -58,11 +57,13 @@ export class UsersService {
     ];
   }
 
-  findOneById(id: string) {
-    return {
-      id: id,
-      name: 'John Doe',
-      email: 'johnDoe@example.com',
-    };
+  findOneById(id: number) {
+    const user = this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return user;
   }
 }

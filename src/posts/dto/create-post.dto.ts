@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,
@@ -17,6 +18,14 @@ import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
+  @ApiProperty({
+    description: 'User ID',
+    example: 1,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+
   @ApiProperty({
     example: 'This is a title',
     description: 'Post title',

@@ -10,7 +10,7 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get('/:userId')
-  getPosts(@Param('userId') userId: string) {
+  getPosts(@Param('userId') userId: number) {
     return this.postsService.findAll(userId);
   }
 
@@ -25,7 +25,7 @@ export class PostsController {
   @Post()
   createPost(@Body() createPostDto: CreatePostDto) {
     console.log(createPostDto);
-    return this.postsService.createPost();
+    return this.postsService.createPost(createPostDto);
   }
 
   @ApiOperation({

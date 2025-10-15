@@ -14,6 +14,8 @@ model User {
   email     String  @unique
   password  String
 
+  posts Post[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -30,12 +32,14 @@ model Post {
   featuredImageUrl String?
   publishedOn      DateTime?
   tags             String[]
+  userId           Int
 
-  Meta_Option Meta_Option[]
-  
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  deletedAt   DateTime?
+  metaOption Meta_Option[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Meta_Option {
