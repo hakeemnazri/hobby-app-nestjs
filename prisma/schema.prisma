@@ -18,3 +18,49 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
+
+model Post {
+  id               Int        @id @default(autoincrement())
+  title            String
+  postType         PostType
+  slug             String     @unique
+  postStatus       PostStatus
+  content          String?
+  schema           String?
+  featuredImageUrl String?
+  publishedOn      DateTime?
+  tags             String[]
+
+  Meta_Option Meta_Option[]
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+}
+
+model Meta_Option {
+  id     Int    @id @default(autoincrement())
+  postId Int
+  key    String
+  value  Json
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum PostType {
+  post
+  page
+  story
+  series
+}
+
+enum PostStatus {
+  draft
+  published
+  review
+  scheduled
+}
