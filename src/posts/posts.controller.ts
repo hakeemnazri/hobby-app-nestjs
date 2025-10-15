@@ -9,9 +9,30 @@ import { PatchPostDto } from './dto/patch-post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @ApiOperation({
+    summary: 'Get all posts',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'You get a 200 response when all records have been successfully retrieved.',
+  })
+  @Get()
+  getAllPosts() {
+    return this.postsService.findAllPosts();
+  }
+
+  @ApiOperation({
+    summary: 'Get posts by ID',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'You get a 200 response when all records have been successfully retrieved.',
+  })
   @Get('/:userId')
   getPosts(@Param('userId') userId: number) {
-    return this.postsService.findAll(userId);
+    return this.postsService.findPostsById(userId);
   }
 
   @ApiOperation({

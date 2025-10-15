@@ -15,6 +15,18 @@ export class TagsService {
     return newTag;
   }
 
+  async findMultipleTags(tags: number[]) {
+    const existingTags = await this.prisma.tag.findMany({
+      where: {
+        id: {
+          in: tags,
+        },
+      },
+    });
+
+    return existingTags;
+  }
+
   findAll() {
     return `This action returns all tags`;
   }
