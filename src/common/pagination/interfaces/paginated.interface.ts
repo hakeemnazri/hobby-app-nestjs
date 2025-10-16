@@ -5,6 +5,8 @@ export interface Paginated<T> {
     totalItems: number;
     currentPage: number;
     totalPages: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
   };
   links: {
     first: string;

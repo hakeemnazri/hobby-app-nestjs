@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule } from '@nestjs/config';
-import { PaginationModuleModule } from './common/pagination/pagination.module';
+import { PaginationModule } from './common/pagination/pagination.module';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import environmentValidation from './config/environment.validation';
@@ -29,7 +29,7 @@ const ENV = process.env.NODE_ENV;
       load: [appConfig, databaseConfig],
       validationSchema: environmentValidation,
     }),
-    PaginationModuleModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

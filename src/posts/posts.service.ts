@@ -10,6 +10,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { PatchPostDto } from './dto/patch-post.dto';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
+import { Post } from '@prisma/client';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 
 @Injectable()
 export class PostsService {
@@ -58,8 +60,11 @@ export class PostsService {
     return newPost;
   }
 
-  async findPostsById(userId: number, postQuery: GetPostsDto) {
-    const posts = await this.paginationProvider.paginateQuery(
+  async findPostsById(
+    userId: number,
+    postQuery: GetPostsDto,
+  ): Promise<Paginated<Post>> {
+    const posts = await this.paginationProvider.paginateQuery<Post>(
       postQuery,
       'post',
       {
