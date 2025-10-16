@@ -12,9 +12,14 @@ import { SignInProvider } from './providers/sign-in.provider';
 @Injectable()
 export class AuthService {
   constructor(
+    /**
+     * inject UsersService
+     */
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
-
+    /**
+     * inject SignInProvider
+     */
     private readonly signInProvider: SignInProvider,
   ) {}
 
