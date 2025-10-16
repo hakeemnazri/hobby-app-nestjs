@@ -11,6 +11,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'nestjs-prisma';
 import { UsersCreateManyUsersProvider } from './providers/users-create-many-users.provider';
 import { CreateManyUsersDto } from './dto/create-many-users.dto';
+import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +22,10 @@ export class UsersService {
     private readonly prisma: PrismaService,
 
     private readonly usersCreateManyUsersProvider: UsersCreateManyUsersProvider,
+
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
+
   async createUser(createUserDto: CreateUserDto) {
     try {
       const existingUser = await this.prisma.user.findUnique({
@@ -86,5 +90,9 @@ export class UsersService {
     return await this.usersCreateManyUsersProvider.createManyUsers(
       createManyUsersDto,
     );
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.findOneUserByEmailProvider.findOneUserByEmail(email);
   }
 }
