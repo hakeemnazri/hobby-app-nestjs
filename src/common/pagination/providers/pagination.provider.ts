@@ -4,6 +4,7 @@ import { PaginationQueryDto } from '../dto/pagination-query.dto';
 import { REQUEST } from '@nestjs/core';
 import type { Request } from 'express';
 import { Paginated } from '../interfaces/paginated.interface';
+import { PrismaService } from 'nestjs-prisma';
 
 type PrismaModelDelegate = {
   findMany: (args?: any) => Promise<any[]>;
@@ -19,7 +20,7 @@ type PrismaModel = {
 @Injectable()
 export class PaginationProvider {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: PrismaService,
     @Inject(REQUEST)
     private readonly request: Request,
   ) {}
@@ -80,22 +81,24 @@ export class PaginationProvider {
       },
       links: {
         first: newUrl.origin + newUrl.pathname + '?page=1&limit=' + limit,
-        previous:
-          newUrl.origin +
-          newUrl.pathname +
-          '?page=' +
-          (page - 1) +
-          '&limit=' +
-          limit,
+        previous: hasPreviousPage
+          ? newUrl.origin +
+            newUrl.pathname +
+            '?page=' +
+            (page - 1) +
+            '&limit=' +
+            limit
+          : null,
         current:
           newUrl.origin + newUrl.pathname + '?page=' + page + '&limit=' + limit,
-        next:
-          newUrl.origin +
-          newUrl.pathname +
-          '?page=' +
-          (page + 1) +
-          '&limit=' +
-          limit,
+        next: hasNextPage
+          ? newUrl.origin +
+            newUrl.pathname +
+            '?page=' +
+            (page + 1) +
+            '&limit=' +
+            limit
+          : null,
         last:
           newUrl.origin +
           newUrl.pathname +

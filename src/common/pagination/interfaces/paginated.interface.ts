@@ -10,9 +10,9 @@ export interface Paginated<T> {
   };
   links: {
     first: string;
-    previous: string;
+    previous: string | null;
     current: string;
-    next: string;
+    next: string | null;
     last: string;
   };
 }
