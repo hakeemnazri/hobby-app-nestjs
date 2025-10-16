@@ -11,6 +11,7 @@ import { HashingProvider } from './hashing.provider';
 import { JwtService } from '@nestjs/jwt';
 import type { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
+import { GenerateTokensProviders } from './generate-tokens.providers';
 
 @Injectable()
 export class SignInProvider {
@@ -25,6 +26,11 @@ export class SignInProvider {
      * inject HashingProvider
      */
     private readonly hashingProvider: HashingProvider,
+
+    /**
+     * inject generateTokensProvider
+     */
+    private readonly generateTokenProvider: GenerateTokensProviders,
 
     /**
      * inject Jwt Config
@@ -56,21 +62,12 @@ export class SignInProvider {
      * send JWT in cookies
      */
 
-    const accessToken = await this.jwtService.signAsync(
-      {
-        sub: user.id,
-        email: user.email,
-      },
-      {
-        secret: this.jwtConfiguration.secret,
-        audience: this.jwtConfiguration.audience,
-        issuer: this.jwtConfiguration.issuer,
-        expiresIn: this.jwtConfiguration.accessTokenTtl,
-      },
-    );
+    const { accessToken, refreshToken } =
+      await this.generateTokenProvider.generateTokens(user);
 
     return {
       accessToken,
+      refreshToken,
     };
   }
 }

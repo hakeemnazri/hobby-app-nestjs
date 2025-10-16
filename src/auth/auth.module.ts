@@ -8,6 +8,7 @@ import { SignInProvider } from './providers/sign-in.provider';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { GenerateTokensProviders } from './providers/generate-tokens.providers';
 
 @Module({
   controllers: [AuthController],
@@ -18,6 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
       useClass: BcryptProvider,
     },
     SignInProvider,
+    GenerateTokensProviders,
   ],
   exports: [AuthService],
   imports: [

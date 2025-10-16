@@ -12,6 +12,7 @@ import { GetPostsDto } from './dto/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import { Post } from '@prisma/client';
 import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 @Injectable()
 export class PostsService {
@@ -31,10 +32,8 @@ export class PostsService {
     return posts;
   }
 
-  async createPost(createPostDto: CreatePostDto) {
-    const existingUser = await this.usersService.findOneById(
-      createPostDto.userId,
-    );
+  async createPost(createPostDto: CreatePostDto, user: ActiveUserData) {
+    const existingUser = await this.usersService.findOneById(user.sub);
 
     if (!existingUser) {
       throw new Error('User does not exist');
