@@ -30,6 +30,7 @@ export class AccessTokenGuard implements CanActivate {
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     //take token from headers
     const request = context.switchToHttp().getRequest<Request>();
