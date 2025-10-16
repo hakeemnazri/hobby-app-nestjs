@@ -15,9 +15,15 @@ import jwtConfig from '../config/jwt.config';
 @Injectable()
 export class SignInProvider {
   constructor(
+    /**
+     * inject UsersService
+     */
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
 
+    /**
+     * inject HashingProvider
+     */
     private readonly hashingProvider: HashingProvider,
 
     /**
