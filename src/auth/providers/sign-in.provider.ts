@@ -8,7 +8,6 @@ import {
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from '../dto/sign-in.dto';
 import { HashingProvider } from './hashing.provider';
-import { JwtService } from '@nestjs/jwt';
 import type { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
 import { GenerateTokensProviders } from './generate-tokens.providers';
@@ -31,11 +30,6 @@ export class SignInProvider {
      * inject generateTokensProvider
      */
     private readonly generateTokenProvider: GenerateTokensProviders,
-
-    /**
-     * inject Jwt Config
-     */
-    private readonly jwtService: JwtService,
     /**
      * inject Jwt Config
      */
