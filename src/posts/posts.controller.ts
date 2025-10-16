@@ -43,7 +43,7 @@ export class PostsController {
   @Get('/:userId')
   getPosts(@Param('userId') userId: number, @Query() postQuery: GetPostsDto) {
     console.log(postQuery);
-    return this.postsService.findPostsById(userId);
+    return this.postsService.findPostsById(userId, postQuery);
   }
 
   @ApiOperation({

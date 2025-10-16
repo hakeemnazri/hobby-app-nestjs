@@ -8,6 +8,8 @@ import { PrismaService } from 'nestjs-prisma';
 import { UsersService } from 'src/users/users.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PatchPostDto } from './dto/patch-post.dto';
+import { GetPostsDto } from './dto/get-posts.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 
 @Injectable()
 export class PostsService {
@@ -15,6 +17,7 @@ export class PostsService {
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
     private readonly prisma: PrismaService,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
   findAllPosts() {
     const posts = this.prisma.post.findMany({
@@ -55,17 +58,17 @@ export class PostsService {
     return newPost;
   }
 
-  async findPostsById(userId: number) {
-    const user = await this.prisma.post.findMany({
-      where: {
-        id: userId,
+  async findPostsById(userId: number, postQuery: GetPostsDto) {
+    const posts = await this.paginationProvider.paginateQuery(
+      postQuery,
+      'post',
+      {
+        where: {
+          userId,
+        },
       },
-      include: {
-        metaOption: true,
-        user: true,
-      },
-    });
-    return user;
+    );
+    return posts;
   }
 
   async updatePost(patchPostDto: PatchPostDto) {
