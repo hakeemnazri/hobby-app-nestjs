@@ -1,4 +1,10 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignInProvider } from './providers/sign-in.provider';
@@ -12,18 +18,10 @@ export class AuthService {
     private readonly signInProvider: SignInProvider,
   ) {}
 
+  @HttpCode(HttpStatus.OK)
   async signIn(signInDto: SignInDto) {
     const user = await this.signInProvider.signIn(signInDto);
     return user;
-  }
-  login(email: string, password: string) {
-    const user = this.usersService.findOneById(1234);
-
-    return {
-      user: user,
-      email: email,
-      password: password,
-    };
   }
 
   isAuthenticated() {
