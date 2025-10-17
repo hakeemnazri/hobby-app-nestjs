@@ -1,4 +1,3 @@
-import { JwtPayload } from './../interfaces/jwt-payload.interface';
 import {
   forwardRef,
   Inject,
@@ -6,7 +5,7 @@ import {
   OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
-import { OAuth2Client, TokenPayload } from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 import type { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
 import { GoogleTokenDto } from './dtos/google-token.dto';
@@ -54,7 +53,12 @@ export class GoogleAuthenticationService implements OnModuleInit {
       throw new UnauthorizedException('Invalid token payload');
     }
 
-    const { email, sub: googleId } = payload;
+    const {
+      email,
+      sub: googleId,
+      given_name: firstName,
+      family_name: lastName,
+    } = payload;
 
     const user = await this.usersService.findOneByGoogleId(googleId);
 

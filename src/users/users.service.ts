@@ -1,3 +1,4 @@
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import {
   BadRequestException,
@@ -13,6 +14,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { UsersCreateManyUsersProvider } from './providers/users-create-many-users.provider';
 import { CreateManyUsersDto } from './dto/create-many-users.dto';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
+import { GoogleUser } from './interfaces/google-user.interface';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +29,8 @@ export class UsersService {
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
 
     private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
+
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -101,5 +105,9 @@ export class UsersService {
 
   async findOneByGoogleId(googleId: string) {
     return await this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+
+  async createGoogleUser(googleUser: GoogleUser) {
+    return await this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }
