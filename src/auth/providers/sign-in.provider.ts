@@ -46,7 +46,7 @@ export class SignInProvider {
 
     const isEqual = await this.hashingProvider.comparePassword(
       signInDto.password,
-      user.password,
+      user.password || '',
     );
 
     if (!isEqual) {

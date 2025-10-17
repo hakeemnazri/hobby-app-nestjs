@@ -25,10 +25,14 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(6)
   @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, {
     message: 'password too weak',
   })
-  password: string;
+  password?: string;
+
+  @IsString()
+  @IsOptional()
+  googleId: string;
 }

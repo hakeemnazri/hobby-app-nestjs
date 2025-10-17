@@ -1,3 +1,4 @@
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import {
   BadRequestException,
   forwardRef,
@@ -24,6 +25,8 @@ export class UsersService {
     private readonly usersCreateManyUsersProvider: UsersCreateManyUsersProvider,
 
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
+
+    private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -94,5 +97,9 @@ export class UsersService {
 
   async findOneByEmail(email: string) {
     return await this.findOneUserByEmailProvider.findOneUserByEmail(email);
+  }
+
+  async findOneByGoogleId(googleId: string) {
+    return await this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
   }
 }

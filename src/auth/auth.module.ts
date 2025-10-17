@@ -11,9 +11,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { GenerateTokensProviders } from './providers/generate-tokens.providers';
 import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { GoogleAuthenticationController } from './social/google-authentication.controller';
+import { GoogleAuthenticationService } from './social/google-authentication.service';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, GoogleAuthenticationController],
   providers: [
     AuthService,
     {
@@ -24,6 +26,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
     GenerateTokensProviders,
     RefreshTokensProvider,
     RefreshTokenDto,
+    GoogleAuthenticationService,
   ],
   exports: [AuthService],
   imports: [

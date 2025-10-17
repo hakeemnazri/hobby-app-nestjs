@@ -12,7 +12,8 @@ model User {
   firstName String
   lastName  String?
   email     String  @unique
-  password  String
+  password  String?
+  googleId  String? @unique
 
   posts Post[]
 
@@ -44,7 +45,7 @@ model Post {
 
 model Tag {
   id               Int     @id @default(autoincrement())
-  Post      Post[]
+  Post             Post[]
   name             String
   slug             String  @unique
   description      String?
