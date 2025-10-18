@@ -5,7 +5,7 @@ import { GoogleAuthenticationService } from './google-authentication.service';
 import { Body, Controller, Post } from '@nestjs/common';
 
 @Auth(AuthType.None)
-@Controller('auth/google-authentication')
+@Controller('auth')
 export class GoogleAuthenticationController {
   constructor(
     /**
@@ -14,8 +14,14 @@ export class GoogleAuthenticationController {
     private readonly googleAuthenticationService: GoogleAuthenticationService,
   ) {}
 
-  @Post()
-  authentication(@Body() googleTokenDto: GoogleTokenDto) {
-    return this.googleAuthenticationService.authentication(googleTokenDto);
+  @Post('meow')
+  async authentication(@Body() googleTokenDto: GoogleTokenDto) {
+    const { accessToken, refreshToken } =
+      await this.googleAuthenticationService.authentication(googleTokenDto);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

@@ -56,8 +56,8 @@ export class GoogleAuthenticationService implements OnModuleInit {
     const {
       email,
       sub: googleId,
-      given_name: firstName,
-      family_name: lastName,
+      given_name: firstName = 'firstName',
+      family_name: lastName = 'lastName',
     } = payload;
 
     const user = await this.usersService.findOneByGoogleId(googleId);
@@ -69,6 +69,13 @@ export class GoogleAuthenticationService implements OnModuleInit {
       return { accessToken, refreshToken };
     }
 
-    console.log(email);
+    const newUser = await this.usersService.createGoogleUser({
+      email,
+      firstName,
+      lastName,
+      googleId,
+    });
+
+    return this.generateTokenProvider.generateTokens(newUser);
   }
 }
