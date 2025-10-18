@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { AppConfigType } from './config/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -52,6 +54,14 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  await app.listen(process.env.PORT ?? 3000);
+
+  /**
+   * server start
+   */
+
+  const configService = app.get(ConfigService);
+  const appConf = configService.getOrThrow<AppConfigType>('app');
+  const port = appConf.port;
+  await app.listen(port);
 }
 void bootstrap();

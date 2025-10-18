@@ -32,7 +32,20 @@ import { GoogleAuthenticationService } from './social/google-authentication.serv
   imports: [
     forwardRef(() => UsersModule),
     ConfigModule.forFeature(jwtConfig),
-    JwtModule.registerAsync(jwtConfig.asProvider()),
+    JwtModule.registerAsync(jwtConfig.asProvider()), //if do not use asProvider() method, it will show as boiler plate below
+    // JwtModule.registerAsync({
+    //   imports: [ConfigModule.forFeature(jwtConfig)],
+    //   inject: [jwtConfig.KEY],
+    //   useFactory: (jwtConfiguration: ConfigType<typeof jwtConfig>) => ({
+    //     secret: jwtConfiguration.secret,
+    //     audience: jwtConfiguration.audience,
+    //     issuer: jwtConfiguration.issuer,
+    //     accessTokenTtl: jwtConfiguration.accessTokenTtl,
+    //     refreshTokenTtl: jwtConfiguration.refreshTokenTtl,
+    //     googleClientId: jwtConfiguration.googleClientId,
+    //     googleClientSecret: jwtConfiguration.googleClientSecret,
+    //   }),
+    // }),
   ],
 })
 export class AuthModule {}

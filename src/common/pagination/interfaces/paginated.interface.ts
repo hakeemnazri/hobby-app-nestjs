@@ -1,4 +1,4 @@
-export interface Paginated<T> {
+export type Paginated<T> = {
   data: T[];
   meta: {
     itemsPerPage: number;
@@ -15,4 +15,4 @@ export interface Paginated<T> {
     next: string | null;
     last: string;
   };
-}
+};
