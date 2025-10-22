@@ -17,6 +17,7 @@ import jwtConfig from './auth/config/jwt.config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/access-token.guard';
 import { AthenticationGuard } from './auth/guards/athentication/athentication.guard';
+import { LoggerModule } from './logger/logger.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -37,6 +38,7 @@ const ENV = process.env.NODE_ENV;
     PaginationModule,
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
